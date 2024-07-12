@@ -10,22 +10,7 @@ export const LoginSchema = z.object({
   }),
 });
 
-export const ProfileCreationSchema = z.object({
-  provider_name: z.string().min(1, {
-    message: "please enter your provider name",
-  }),
-  provider_location: z.string().min(1, {
-    message: "please enter your location",
-  }),
-  provider_description: z.string().min(1, {
-    message: "please enter your description",
-  }),
-  provider_services: z.string().min(1, {
-    message: "please enter your services",
-  }),
-});
-
-export const RegisterSchema = z.object({
+export const RegisterCustomerSchema = z.object({
   email: z.string().email().min(1, { message: "please enter your email" }),
   password: z.string().min(6, {
     message: "password must be at least 6 characters",
@@ -40,12 +25,45 @@ export const RegisterSchema = z.object({
   userServiceCare: z.optional(z.boolean()),
 });
 
+export const RegisterCaregiverSchema = z.object({
+  type: z.string(),
+  description: z.string(),
+  offerings: z.string(),
+  email: z.string().email().min(1, { message: "please enter your email" }),
+  password: z.string().min(6, {
+    message: "password must be at least 6 characters",
+  }),
+  name: z.string().min(1, { message: "please enter your name" }),
+  contact: z.string().min(11, { message: "please enter your contact number" }),
+  birthdate: z.date({
+    required_error: "Please select a date and time",
+    invalid_type_error: "That's not a date!",
+  }),
+  photoBytes: z.optional(z.string()),
+  userServiceCare: z.optional(z.boolean()),
+});
+
+export const RoleCaregiverSchema = z.object({
+  type: z.string(),
+  description: z.string(),
+  offerings: z.string(),
+});
+
 export const CookiesSchema = z.object({
   name: z.string(),
   value: z.string(),
 });
 
 export const TokenSchema = z.string();
+export const UserType = z.string();
+export const EmailSchema = z.string();
+
+export const sessionCookieSchema = z.object({
+  value: z.object({
+    name: z.string(),
+    value: z.string(),
+  }),
+});
 
 export const UserSchema = z.object({
   email: z.string(),
@@ -63,48 +81,57 @@ export const UserSchema = z.object({
   ),
 });
 
-export const ServiceSchema = z.object({
-  type: z.string(),
-  description: z.string(),
-  offerings: z.array(z.string()),
-  email: z.string().email().min(1, { message: "please enter your email" }),
-  password: z.string().min(6, {
-    message: "password must be at least 6 characters",
-  }),
-  name: z.string().min(1, { message: "please enter your name" }),
-  contact: z.string().min(11, { message: "please enter your contact number" }),
-  birthdate: z.date({
-    required_error: "Please select a date and time",
-    invalid_type_error: "That's not a date!",
-  }),
-  photoBytes: z.optional(z.string()),
-  userServiceCare: z.optional(z.boolean()),
-});
-
-export const reqSchema = z.object({
-  requestDetails: z.string(),
-});
-
-export const RequestSchema = z.object({
-  requestDetails: z.string(),
-});
-export const OfferSchema = z.object({
-  offerDetails: z.string(),
-});
 const customerSchema = z.object({
   email: z.string().email(),
   name: z.string(),
-  contactNo: z.string().length(11), // Assuming Philippine phone number format
+  contactNo: z.string().length(11),
   birthDate: z.string(),
   photoId: z.string().optional(),
-  userServiceCare: z.any().optional(), // Can be more specific if you know the data type
+  userServiceCare: z.any().optional(),
 });
 
-const requestSchema = z.object({
+export const RequestSchema = z.object({
   requestId: z.number().int(),
   customer: customerSchema,
   requestDetails: z.string(),
-  requestStatus: z.string(), // Assuming requestStatus can only have specific names
+  requestStatus: z.string(),
 });
 
-export const RequestsSchema = z.array(requestSchema);
+export const RequestsSchema = z.array(RequestSchema);
+
+export const CustomerRequestSchema = z.object({
+  requestDetails: z
+    .string()
+    .min(1, { message: "please enter the Description" }),
+  requestTitle: z.string().min(1, { message: "please enter the Title" }),
+  requestLocation: z.string().min(1, { message: "please enter the Location" }),
+});
+export const CustomerRequestIdSchema = z.object({
+  requestId: z.number(),
+});
+export const ProviderOfferSchema = z.object({
+  requestId: z.number(),
+  offerDetails: z.string().min(1, { message: "please enter your offer" }),
+});
+export const ProviderOfferInputSchema = z.object({
+  offerDetails: z.string().min(1, { message: "please enter your offer" }),
+});
+
+export const FormSchema = z.object({
+  pin: z.string().min(6, {
+    message: "Your one-time password must be 6 characters.",
+  }),
+});
+export const AcceptOfferSchema = z.object({
+  offerId: z.number(),
+});
+export const UserSettings = z.object({
+  name: z.string().optional(),
+  birthdate: z
+    .date({
+      required_error: "Please select a date and time",
+      invalid_type_error: "That's not a date!",
+    })
+    .optional(),
+  contactNo: z.string().optional(),
+});

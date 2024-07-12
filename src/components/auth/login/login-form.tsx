@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/form";
 import { CardWrapper } from "../card-wrapper";
 import { Button } from "@/components/ui/button";
-import { FormSuccess } from "@/components/form-success";
 import { FormError } from "@/components/form-error";
-import { login } from "@/server/actions/login";
+import { login } from "@/server/actions";
 import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/schemas";
+import { toast } from "@/components/ui/use-toast";
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -38,7 +38,10 @@ export const LoginForm = () => {
       login(values).then((data) => {
         setError(data.error);
         if (!data.error) {
-          router.push(`/${data.role}/dashboard`);
+          toast({
+            description: "You Successfully Logged in",
+          });
+          router.refresh();
         }
       });
     });
@@ -49,8 +52,15 @@ export const LoginForm = () => {
       backButtonLabel="Don't have an account?"
       backButtonHref="/auth/role"
     >
+      <h1 className="text-3xl font-bold mb-2 text-custom-action">Login</h1>
+      <p className="text-balance text-muted-foreground mb-10 text-custom-lightGreen">
+        Enter your email below to login to your account
+      </p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 w-2/3"
+        >
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -63,6 +73,7 @@ export const LoginForm = () => {
                       type="email"
                       placeholder="Enter your email"
                       disabled={isPending}
+                      className="text-custom-action"
                       {...field}
                     />
                   </FormControl>
@@ -81,6 +92,7 @@ export const LoginForm = () => {
                       type="password"
                       placeholder="Enter your password"
                       disabled={isPending}
+                      className="text-custom-action"
                       {...field}
                     />
                   </FormControl>
@@ -90,7 +102,11 @@ export const LoginForm = () => {
             />
           </div>
           <FormError message={error} />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full bg-[#8a9e61]"
+            disabled={isPending}
+          >
             Login
           </Button>
         </form>

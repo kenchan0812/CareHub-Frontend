@@ -5,34 +5,32 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { RequestSchema } from "@/schemas";
-import { z } from "zod";
+import { useState } from "react";
 
 const AddCard = () => {
+  const [open, setOpen] = useState<boolean>(false);
   return (
-    <div className="place-self-center mb-32">
-      <Dialog>
+    <div className="place-self-center pb-6">
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="max-w-xs">
+          <Button className="max-w-xs bg-custom-green hover:bg-custom-action">
             Add Request
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="w-full">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Make new Request</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              Make new requests here. Click Submit when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid items-center gap-4">
-              <CardForm />
+              <CardForm setOpen={setOpen} />
             </div>
           </div>
         </DialogContent>

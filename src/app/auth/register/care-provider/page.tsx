@@ -1,7 +1,7 @@
-import { ProviderRegisterForm } from "@/components/auth/register/provider-register-form";
+import { CaregiverRegistrationForm } from "@/components/auth/register/caregiver-register-form";
 
 const RegisterPage = () => {
-  return <ProviderRegisterForm />;
+  return <CaregiverRegistrationForm />;
 };
 
 export default RegisterPage;

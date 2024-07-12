@@ -1,8 +1,13 @@
+import Header from "@/components/navigation/navbar/header";
+
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-full flex items-center justify-center bg-slate-100">
-      {children}
-    </div>
+    <>
+      <Header />
+      <div className="h-screen flex items-center justify-center bg-custom-lighterGreen">
+        {children}
+      </div>
+    </>
   );
 };
 
